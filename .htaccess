@@ -1,0 +1,41 @@
+#---------------------------------------------------------------------
+# Impide navegar en los direcctorios del sitio
+#---------------------------------------------------------------------
+Options All -Indexes
+RewriteEngine on
+
+#---------------------------------------------------------------------
+# Solo se permite el acceso desde 3 IPs del laboratorio
+#---------------------------------------------------------------------
+#Require ip 192.168.1.10 192.168.1.11 192.168.1.12
+
+
+#---------------------------------------------------------------------
+# Archivos de hasta 20 MB
+#---------------------------------------------------------------------
+<IfModule mod_php.c>
+    php_value upload_max_filesize 20M
+    php_value post_max_size 25M
+</IfModule>
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 20M
+    php_value post_max_size 25M
+</IfModule>
+
+#---------------------------------------------------------------------
+# En caso de error presentar páginas personalizadas
+#---------------------------------------------------------------------
+ErrorDocument 400 http://localhost:8088/2026/mybox/errores/400.php
+ErrorDocument 403 http://localhost:8088/2026/mybox/errores/403.php
+ErrorDocument 404 http://localhost:8088/2026/mybox/errores/404.php
+ErrorDocument 500 http://localhost:8088/2026/mybox/errores/500.php
+
+
+#---------------------------------------------------------------------
+# Evita tener acceso a los archivos con las siguientes extensiones
+#---------------------------------------------------------------------
+<FilesMatch "(\.(bak|config|inc|ini|log|sh|sql)|~)$">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</FilesMatch>
